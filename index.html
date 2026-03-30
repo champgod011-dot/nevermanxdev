@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Free Sclip</title>
+
+<style>
+
+body{
+margin:0;
+font-family:sans-serif;
+color:white;
+background:linear-gradient(135deg,#020617,#0f172a,#020617);
+min-height:100vh;
+overflow-x:hidden;
+}
+
+/* glow background */
+
+body::before{
+content:"";
+position:fixed;
+width:700px;
+height:700px;
+background:radial-gradient(circle,rgba(0,170,255,0.25),transparent 60%);
+top:-200px;
+left:-200px;
+filter:blur(120px);
+}
+
+body::after{
+content:"";
+position:fixed;
+width:700px;
+height:700px;
+background:radial-gradient(circle,rgba(0,255,200,0.25),transparent 60%);
+bottom:-200px;
+right:-200px;
+filter:blur(120px);
+}
+
+/* header */
+
+.header{
+text-align:center;
+padding:40px;
+}
+
+.title{
+font-size:42px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+.sub{
+opacity:0.7;
+}
+
+/* search */
+
+.search{
+width:90%;
+max-width:400px;
+margin:20px auto;
+display:block;
+padding:14px;
+border-radius:10px;
+border:none;
+font-size:16px;
+}
+
+/* container */
+
+.container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+/* card */
+
+.card{
+width:280px;
+margin:15px;
+background:#1e293b;
+border-radius:15px;
+overflow:hidden;
+cursor:pointer;
+transition:0.2s;
+}
+
+.card:hover{
+transform:scale(1.05);
+}
+
+.card img{
+width:100%;
+height:160px;
+object-fit:cover;
+}
+
+.card-body{
+padding:15px;
+}
+
+.card-title{
+color:#38bdf8;
+font-size:18px;
+margin-bottom:5px;
+}
+
+/* script page */
+
+.script-page{
+display:none;
+text-align:center;
+padding:20px;
+}
+
+.script-box{
+background:black;
+color:#00ff88;
+padding:20px;
+border-radius:10px;
+max-width:600px;
+margin:20px auto;
+overflow:auto;
+}
+
+/* admin */
+
+.admin{
+display:none;
+max-width:500px;
+margin:auto;
+padding:20px;
+}
+
+.admin input,
+.admin textarea{
+width:100%;
+margin:10px 0;
+padding:12px;
+border-radius:8px;
+border:none;
+}
+
+/* buttons */
+
+.btn{
+padding:12px 18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+}
+
+.add{background:#22c55e;color:white;}
+.copy{background:#22c55e;color:white;}
+.download{background:#3b82f6;color:white;}
+.back{background:#475569;color:white;}
+
+</style>
+</head>
+
+<body>
+
+<div id="home">
+
+<div class="header">
+<div class="title">Free Sclip</div>
+<div class="sub">ฟรีสคริปต์โดย Dazx</div>
+</div>
+
+<input class="search" id="search" placeholder="ค้นหาสคริปต์..." oninput="render()">
+
+<div class="container" id="scripts"></div>
+
+<div style="text-align:center">
+<button class="btn add" onclick="openAdmin()">Admin</button>
+</div>
+
+</div>
+
+<!-- Script Page -->
+
+<div id="scriptPage" class="script-page">
+
+<button class="btn back" onclick="goBack()">← กลับ</button>
+
+<h1 id="scriptTitle"></h1>
+<p id="scriptDesc"></p>
+
+<div class="script-box" id="scriptCode"></div>
+
+<button class="btn copy" onclick="copyScript()">Copy Script</button>
+<button class="btn download" onclick="downloadScript()">Download Script</button>
+
+</div>
+
+<!-- Admin -->
+
+<div id="admin" class="admin">
+
+<h2>เพิ่ม Script</h2>
+
+<input id="name" placeholder="ชื่อ Script">
+
+<input id="image" placeholder="URL รูป">
+
+<textarea id="desc" placeholder="คำอธิบาย"></textarea>
+
+<textarea id="code" placeholder="Script Code"></textarea>
+
+<button class="btn add" onclick="addScript()">เพิ่ม Script</button>
+<button class="btn back" onclick="goBack()">กลับ</button>
+
+</div>
+
+<script>
+
+let scripts=[
+{
+name:"Silent Aim",
+image:"https://picsum.photos/400/200",
+desc:"สคริปต์ล็อคเป้า ยิงแม่น",
+code:'loadstring(game:HttpGet("https://example.com/script.lua"))()'
+}
+]
+
+let currentScript=""
+
+function render(){
+
+let box=document.getElementById("scripts")
+let search=document.getElementById("search").value.toLowerCase()
+
+box.innerHTML=""
+
+scripts.forEach((s,i)=>{
+
+if(!s.name.toLowerCase().includes(search)) return
+
+box.innerHTML+=`
+<div class="card" onclick="openScript(${i})">
+<img src="${s.image}">
+<div class="card-body">
+<div class="card-title">${s.name}</div>
+<div>${s.desc}</div>
+</div>
+</div>
+`
+
+})
+
+}
+
+function openScript(i){
+
+currentScript=scripts[i]
+
+document.getElementById("home").style.display="none"
+document.getElementById("scriptPage").style.display="block"
+
+document.getElementById("scriptTitle").innerText=currentScript.name
+document.getElementById("scriptDesc").innerText=currentScript.desc
+document.getElementById("scriptCode").innerText=currentScript.code
+
+}
+
+function goBack(){
+
+document.getElementById("home").style.display="block"
+document.getElementById("scriptPage").style.display="none"
+document.getElementById("admin").style.display="none"
+
+}
+
+function openAdmin(){
+
+document.getElementById("home").style.display="none"
+document.getElementById("admin").style.display="block"
+
+}
+
+function addScript(){
+
+let s={
+name:document.getElementById("name").value,
+image:document.getElementById("image").value,
+desc:document.getElementById("desc").value,
+code:document.getElementById("code").value
+}
+
+scripts.push(s)
+
+render()
+
+alert("เพิ่ม Script สำเร็จ")
+
+}
+
+function copyScript(){
+
+navigator.clipboard.writeText(currentScript.code)
+
+alert("Copied!")
+
+}
+
+function downloadScript(){
+
+let blob=new Blob([currentScript.code],{type:"text/plain"})
+
+let a=document.createElement("a")
+
+a.href=URL.createObjectURL(blob)
+
+a.download=currentScript.name+".lua"
+
+a.click()
+
+}
+
+render()
+
+</script>
+
+</body>
+  </html>

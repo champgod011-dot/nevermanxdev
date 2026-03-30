@@ -33,7 +33,7 @@
         <h2 class="get-your-key">Get Your Key</h2>
     </div>
     <p id="instruction" class="thai-desc">กด Generate ให้ครบ 10 ครั้งเพื่อรับคีย์</p>
-    <div class="key-display"><p class="key-text" id="key">----------</p></div>
+    <div class="key-display"><p class="key-text" id="key"></p></div>
     <p class="countdown" id="timer">Time left: 05:00:00</p>
     <div class="btn-group">
         <button id="genBtn" class="btn-blue" onclick="handleClick()">Generate (0/10)</button>
@@ -49,7 +49,7 @@
         let seed = (day * 100) + (month * 1000) + hourGroup;
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         let result = ""; let random = seed;
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             random = (random * 16807) % 2147483647;
             let idx = (random % chars.length); 
             result += chars.charAt(idx);

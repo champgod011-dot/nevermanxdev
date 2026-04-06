@@ -1,118 +1,287 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>NEVERMAN KEY GENERATOR</title>
-<style>
-    body{ margin:0; background:#050b18; font-family: 'Segoe UI', Roboto, sans-serif; color:white; overflow:hidden; display:flex; align-items:center; justify-content:center; height:100vh; }
-    canvas{ position:absolute; top:0; left:0; }
-    .box{ position:relative; background:rgba(10,20,40,.9); padding:80px 60px; border-radius:40px; box-shadow:0 0 70px #00bfff77; text-align:center; width:550px; max-width: 95%; z-index: 1; border: 2px solid rgba(0, 191, 255, 0.3); }
-    .header-key { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 15px; }
-    .key-icon { font-size: 60px; }
-    .get-your-key { font-size: 48px; font-weight: 900; color: white; margin: 0; text-shadow: 0 0 20px #00bfff; }
-    .thai-desc { color: #CCCCCC; font-size: 22px; margin-top: 15px; margin-bottom: 40px; }
-    .key-display { background:#0a1a33; padding: 40px 20px; border-radius:20px; margin-bottom: 20px; border: 3px solid rgba(0, 191, 255, 0.4); min-height: 80px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 0 30px rgba(0, 191, 255, 0.2); }
-    .key-text { font-size: 46px; font-weight: bold; color: #00bfff; word-break: break-all; margin: 0; letter-spacing: 3px; text-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
-    .countdown { color: #ff6666; font-size: 26px; margin-bottom: 40px; font-weight: bold; font-family: 'Courier New', Courier, monospace; background: rgba(255, 0, 0, 0.1); padding: 10px; border-radius: 10px; display: inline-block; }
-    .btn-group { display: flex; flex-direction: column; gap: 20px; }
-    button{ border:none; padding: 25px; border-radius: 20px; cursor:pointer; color:white; font-weight:bold; font-size: 26px; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; }
-    .btn-blue { background: linear-gradient(135deg, #00bfff, #007bb5); box-shadow: 0 8px 20px rgba(0, 191, 255, 0.4); }
-    .btn-blue:hover { background: linear-gradient(135deg, #00d5ff, #00bfff); transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0, 191, 255, 0.6); }
-    .btn-gray { background: #2a3442; color: #666; cursor: not-allowed; }
-    .settings{ position:absolute; top:25px; right:30px; cursor:pointer; font-size: 32px; color: #7fdcff; }
-    .menu{ display:none; position:absolute; top:70px; right:30px; background:#081427; padding:20px; border-radius:15px; box-shadow:0 0 30px #00bfff55; z-index: 10; }
-</style>
-</head>
-<body>
-<canvas id="bg"></canvas>
-<div class="box">
-    <div class="settings" onclick="toggleMenu()">⚙</div>
-    <div id="menu" class="menu">Settings</div>
-    <div class="header-key">
-        <span class="key-icon">🔑</span>
-        <h2 class="get-your-key">Get Your Key</h2>
-    </div>
-    <p id="instruction" class="thai-desc">กด Generate ให้ครบ 10 ครั้งเพื่อรับคีย์</p>
-    <div class="key-display"><p class="key-text" id="key"></p></div>
-    <p class="countdown" id="timer">Time left: 05:00:00</p>
-    <div class="btn-group">
-        <button id="genBtn" class="btn-blue" onclick="handleClick()">Generate (0/10)</button>
-        <button id="copyBtn" class="btn-gray" onclick="copyKey()">Copy Key</button>
-    </div>
-</div>
+<!DOCTYPE html>  <html>  
+<head>  
+<meta charset="UTF-8">  
+<title>NEVERMAN KEY GENERATOR</title>  
+<style>  
+body{  
+margin:0;  
+background:#050b18;  
+font-family:'Segoe UI',Roboto,sans-serif;  
+color:white;  
+overflow:hidden;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+height:100vh;  
+}  
+canvas{  
+position:absolute;  
+top:0;  
+left:0;  
+}  
+.box{  
+position:relative;  
+background:rgba(10,20,40,.9);  
+padding:80px 60px;  
+border-radius:40px;  
+box-shadow:0 0 70px #00bfff77;  
+text-align:center;  
+width:550px;  
+max-width:95%;  
+z-index:1;  
+border:2px solid rgba(0,191,255,0.3);  
+}  
+.header-key{  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+gap:20px;  
+margin-bottom:15px;  
+}  
+.key-icon{font-size:60px;}  
+.get-your-key{  
+font-size:48px;  
+font-weight:900;  
+color:white;  
+margin:0;  
+text-shadow:0 0 20px #00bfff;  
+}  
+.thai-desc{  
+color:#CCCCCC;  
+font-size:22px;  
+margin-top:15px;  
+margin-bottom:40px;  
+}  
+.key-display{  
+background:#0a1a33;  
+padding:40px 20px;  
+border-radius:20px;  
+margin-bottom:20px;  
+border:3px solid rgba(0,191,255,0.4);  
+min-height:80px;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+box-shadow:inset 0 0 30px rgba(0,191,255,0.2);  
+}  
+.key-text{  
+font-size:46px;  
+font-weight:bold;  
+color:#00bfff;  
+word-break:break-all;  
+margin:0;  
+letter-spacing:3px;  
+text-shadow:0 0 10px rgba(0,191,255,0.5);  
+}  
+.countdown{  
+color:#ff6666;  
+font-size:26px;  
+margin-bottom:40px;  
+font-weight:bold;  
+font-family:'Courier New',Courier,monospace;  
+background:rgba(255,0,0,0.1);  
+padding:10px;  
+border-radius:10px;  
+display:inline-block;  
+}  
+.btn-group{  
+display:flex;  
+flex-direction:column;  
+gap:20px;  
+}  
+button{  
+border:none;  
+padding:25px;  
+border-radius:20px;  
+cursor:pointer;  
+color:white;  
+font-weight:bold;  
+font-size:26px;  
+transition:0.4s;  
+text-transform:uppercase;  
+letter-spacing:2px;  
+}  
+.btn-blue{  
+background:linear-gradient(135deg,#00bfff,#007bb5);  
+box-shadow:0 8px 20px rgba(0,191,255,0.4);  
+}  
+.btn-blue:hover{  
+background:linear-gradient(135deg,#00d5ff,#00bfff);  
+transform:translateY(-5px);  
+box-shadow:0 12px 25px rgba(0,191,255,0.6);  
+}  
+.btn-gray{  
+background:#2a3442;  
+color:#666;  
+cursor:not-allowed;  
+}  
+.settings{  
+position:absolute;  
+top:25px;  
+right:30px;  
+cursor:pointer;  
+font-size:32px;  
+color:#7fdcff;  
+}  
+.menu{  
+display:none;  
+position:absolute;  
+top:70px;  
+right:30px;  
+background:#081427;  
+padding:20px;  
+border-radius:15px;  
+box-shadow:0 0 30px #00bfff55;  
+z-index:10;  
+}  
+</style>  
+</head>  
+<body>  <canvas id="bg"></canvas>
 
-<script>
-    let clickCount = 0; const maxClicks = 10; let keyValue = ""; let countdownActive = false; let timerInterval;
-    function getSyncKey() {
-        const now = new Date(); const day = now.getDate(); const month = now.getMonth() + 1; const hour = now.getHours();
-        const hourGroup = Math.floor(hour / 5);
-        let seed = (day * 100) + (month * 1000) + hourGroup;
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        let result = ""; let random = seed;
-        for (let i = 0; i < 20; i++) {
-            random = (random * 16807) % 2147483647;
-            let idx = (random % chars.length); 
-            result += chars.charAt(idx);
-        }
-        return result;
-    }
-    function handleClick() {
-        if (countdownActive) return;
-        if (clickCount < maxClicks) {
-            clickCount++;
-            document.getElementById("genBtn").innerText = `Generate (${clickCount}/${maxClicks})`;
-            if (clickCount === maxClicks) { revealKey(); }
-        }
-    }
-    function revealKey() {
-        keyValue = getSyncKey();
-        document.getElementById("key").innerText = keyValue;
-        document.getElementById("instruction").innerText = "คีย์ของคุณพร้อมใช้งานแล้ว!";
-        document.getElementById("genBtn").innerText = "KEY GENERATED!";
-        document.getElementById("genBtn").className = "btn-gray";
-        document.getElementById("copyBtn").className = "btn-blue";
-        startTimer(5 * 60 * 60);
-    }
-    function startTimer(duration) {
-        countdownActive = true; let timer = duration;
-        clearInterval(timerInterval);
-        timerInterval = setInterval(function () {
-            let hours = Math.floor(timer / 3600); let minutes = Math.floor((timer % 3600) / 60); let seconds = Math.floor(timer % 60);
-            document.getElementById("timer").innerText = `Time left: ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
-            if (--timer < 0) { resetSystem(); }
-        }, 1000);
-    }
-    function resetSystem() {
-        clearInterval(timerInterval); countdownActive = false; clickCount = 0; keyValue = "";
-        document.getElementById("key").innerText = "----------";
-        document.getElementById("instruction").innerText = "กด Generate ให้ครบ 10 ครั้งเพื่อรับคีย์";
-        document.getElementById("genBtn").innerText = "Generate (0/10)";
-        document.getElementById("genBtn").className = "btn-blue";
-        document.getElementById("copyBtn").className = "btn-gray";
-    }
-    function copyKey() {
-        if(!keyValue) return;
-        let temp = document.createElement("textarea"); temp.value = keyValue; document.body.appendChild(temp);
-        temp.select(); document.execCommand("copy"); document.body.removeChild(temp);
-        let btn = document.getElementById("copyBtn"); let oldText = btn.innerText;
-        btn.innerText = "Copied!"; setTimeout(() => { btn.innerText = oldText; }, 1500);
-    }
-    function toggleMenu() { let m = document.getElementById("menu"); m.style.display = m.style.display === "block" ? "none" : "block"; }
-
-    // BG Animation
-    let canvas = document.getElementById("bg"), ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    let particles = []; for(let i=0; i<60; i++) particles.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, vx:(Math.random()-0.5)*0.6, vy:(Math.random()-0.5)*0.6});
-    function draw(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        for(let p of particles){
-            p.x += p.vx; p.y += p.vy;
-            if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1;
-            ctx.fillStyle="#00bfff"; ctx.beginPath(); ctx.arc(p.x,p.y,2,0,Math.PI*2); ctx.fill();
-        }
-        requestAnimationFrame(draw);
-    }
-    draw(); window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-</script>
-</body>
-</html>
+<div class="box">  
+  <div class="settings" onclick="toggleMenu()">⚙</div>  
+  <div id="menu" class="menu">Settings</div>    <div class="header-key">  
+    <span class="key-icon">🔑</span>  
+    <h2 class="get-your-key">Get Your Key</h2>  
+  </div>    <p id="instruction" class="thai-desc">  
+    กด Generate ให้ครบ 10 ครั้งเพื่อรับคีย์  
+  </p>    <div class="key-display">  
+    <p class="key-text" id="key">----------</p>  
+  </div>    <p class="countdown" id="timer">Time left: 05:00:00</p>    <div class="btn-group">  
+    <button id="genBtn" class="btn-blue" onclick="handleClick()">  
+      Generate (0/10)  
+    </button>  
+    <button id="copyBtn" class="btn-gray" onclick="copyKey()">  
+      Copy Key  
+    </button>  
+  </div>  
+</div>  <script>  
+let clickCount = 0  
+const maxClicks = 10  
+let keyValue = ""  
+let countdownActive = false  
+let timerInterval  
+  
+function getSyncKey(){  
+  const now = new Date()  
+  const day = now.getDate()  
+  const month = now.getMonth() + 1  
+  const hour = now.getHours()  
+  const hourGroup = Math.floor(hour / 5)  
+  let seed = (day * 100) + (month * 1000) + hourGroup  
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"  
+  let result = ""  
+  let random = seed  
+  for(let i = 0; i < 10; i++){  
+    random = (random * 16807) % 2147483647  
+    let idx = (random % chars.length) + 1  
+    result += chars.charAt(idx - 1)  
+  }  
+  return result  
+}  
+  
+function handleClick(){  
+  if(countdownActive) return  
+  if(clickCount < maxClicks){  
+    clickCount++  
+    document.getElementById("genBtn").innerText = `Generate (${clickCount}/${maxClicks})`  
+    if(clickCount === maxClicks) revealKey()  
+  }  
+}  
+  
+function revealKey(){  
+  keyValue = getSyncKey()  
+  document.getElementById("key").innerText = keyValue  
+  document.getElementById("instruction").innerText = "คีย์ของคุณพร้อมใช้งานแล้ว!"  
+  document.getElementById("genBtn").innerText = "KEY GENERATED!"  
+  document.getElementById("genBtn").className = "btn-gray"  
+  document.getElementById("copyBtn").className = "btn-blue"  
+  startTimer(5 * 60 * 60)  
+}  
+  
+function startTimer(duration){  
+  countdownActive = true  
+  let timer = duration  
+  clearInterval(timerInterval)  
+  timerInterval = setInterval(function(){  
+    let hours = Math.floor(timer / 3600)  
+    let minutes = Math.floor((timer % 3600) / 60)  
+    let seconds = Math.floor(timer % 60)  
+    document.getElementById("timer").innerText =  
+      `Time left: ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`  
+    if(--timer < 0) resetSystem()  
+  }, 1000)  
+}  
+  
+function resetSystem(){  
+  clearInterval(timerInterval)  
+  countdownActive = false  
+  clickCount = 0  
+  keyValue = ""  
+  document.getElementById("key").innerText = "----------"  
+  document.getElementById("instruction").innerText = "กด Generate ให้ครบ 10 ครั้งเพื่อรับคีย์"  
+  document.getElementById("genBtn").innerText = "Generate (0/10)"  
+  document.getElementById("genBtn").className = "btn-blue"  
+  document.getElementById("copyBtn").className = "btn-gray"  
+  document.getElementById("timer").innerText = "Time left: 05:00:00"  
+}  
+  
+function copyKey(){  
+  if(!keyValue) return  
+  navigator.clipboard.writeText(keyValue).catch(()=>{  
+    let temp = document.createElement("textarea")  
+    temp.value = keyValue  
+    document.body.appendChild(temp)  
+    temp.select()  
+    document.execCommand("copy")  
+    document.body.removeChild(temp)  
+  })  
+  let btn = document.getElementById("copyBtn")  
+  let oldText = btn.innerText  
+  btn.innerText = "Copied!"  
+  setTimeout(()=>{ btn.innerText = oldText }, 1500)  
+}  
+  
+function toggleMenu(){  
+  let m = document.getElementById("menu")  
+  m.style.display = m.style.display === "block" ? "none" : "block"  
+}  
+  
+// Canvas background  
+const canvas = document.getElementById("bg")  
+const ctx = canvas.getContext("2d")  
+canvas.width = window.innerWidth  
+canvas.height = window.innerHeight  
+  
+let particles = []  
+for(let i = 0; i < 60; i++){  
+  particles.push({  
+    x: Math.random() * canvas.width,  
+    y: Math.random() * canvas.height,  
+    vx: (Math.random() - 0.5) * 0.6,  
+    vy: (Math.random() - 0.5) * 0.6  
+  })  
+}  
+  
+function draw(){  
+  ctx.clearRect(0, 0, canvas.width, canvas.height)  
+  for(let p of particles){  
+    p.x += p.vx  
+    p.y += p.vy  
+    if(p.x < 0 || p.x > canvas.width) p.vx *= -1  
+    if(p.y < 0 || p.y > canvas.height) p.vy *= -1  
+    ctx.fillStyle = "#00bfff"  
+    ctx.beginPath()  
+    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2)  
+    ctx.fill()  
+  }  
+  requestAnimationFrame(draw)  
+}  
+draw()  
+  
+window.onresize = ()=>{  
+  canvas.width = window.innerWidth  
+  canvas.height = window.innerHeight  
+}  
+</script>  </body>  
+</html>  

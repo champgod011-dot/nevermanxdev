@@ -3,6 +3,148 @@
 --  Cleaned & Deobfuscated by formatter
 -- ============================================================
 
+repeat task.wait() until game:IsLoaded()
+
+local function GetSyncKey()
+    local day       = tonumber(os.date("%d"))
+    local month     = tonumber(os.date("%m"))
+    local hour      = tonumber(os.date("%H"))
+    local hourGroup = math.floor(hour / 5)
+    local seed      = (day * 100) + (month * 1000) + hourGroup
+    local chars     = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    local result    = ""
+    local random    = seed
+    for i = 1, 10 do
+        random = (random * 16807) % 2147483647
+        local idx = (random % #chars) + 1
+        result = result .. chars:sub(idx, idx)
+    end
+    return result
+end
+
+local function KeySystem()
+    local CorrectKey = GetSyncKey()
+    _G.KeyPassed = false
+
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Parent = game.CoreGui
+
+    local Main = Instance.new("Frame", ScreenGui)
+    Main.Size = UDim2.new(0, 450, 0, 160)
+    Main.Position = UDim2.new(0.5, -225, 0.5, -80)
+    Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Main.BackgroundTransparency = 0.85
+    Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
+    local Stroke = Instance.new("UIStroke", Main)
+    Stroke.Color = Color3.fromRGB(255, 255, 255)
+    Stroke.Thickness = 1.5
+
+    local Logo = Instance.new("ImageLabel", Main)
+    Logo.Size = UDim2.new(0, 140, 0, 140)
+    Logo.Position = UDim2.new(0, 10, 0.5, -70)
+    Logo.Image = "rbxassetid://72830195117719"
+    Logo.BackgroundTransparency = 1
+    Instance.new("UICorner", Logo).CornerRadius = UDim.new(0, 12)
+
+    local Content = Instance.new("Frame", Main)
+    Content.Size = UDim2.new(0, 280, 1, 0)
+    Content.Position = UDim2.new(0, 160, 0, 0)
+    Content.BackgroundTransparency = 1
+
+    local Title = Instance.new("TextLabel", Content)
+    Title.Size = UDim2.new(1, 0, 0, 25)
+    Title.Position = UDim2.new(0, 0, 0, 15)
+    Title.Text = "NEVERMAN KEY SYSTEM"
+    Title.TextColor3 = Color3.new(1, 1, 1)
+    Title.TextStrokeTransparency = 0
+    Title.TextStrokeColor3 = Color3.new(0, 0, 0)
+    Title.TextSize = 18
+    Title.Font = Enum.Font.GothamBold
+    Title.BackgroundTransparency = 1
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    local Sub = Instance.new("TextLabel", Content)
+    Sub.Size = UDim2.new(1, 0, 0, 15)
+    Sub.Position = UDim2.new(0, 0, 0, 40)
+    Sub.Text = "Please enter your key to access the script."
+    Sub.TextColor3 = Color3.fromRGB(200, 200, 200)
+    Sub.TextStrokeTransparency = 0.5
+    Sub.TextStrokeColor3 = Color3.new(0, 0, 0)
+    Sub.TextSize = 12
+    Sub.Font = Enum.Font.GothamMedium
+    Sub.BackgroundTransparency = 1
+    Sub.TextXAlignment = Enum.TextXAlignment.Left
+
+    local TextBox = Instance.new("TextBox", Content)
+    TextBox.Size = UDim2.new(0, 260, 0, 35)
+    TextBox.Position = UDim2.new(0, 0, 0, 65)
+    TextBox.PlaceholderText = "Enter Key Here..."
+    TextBox.BackgroundColor3 = Color3.new(0, 0, 0)
+    TextBox.BackgroundTransparency = 0.6
+    TextBox.TextColor3 = Color3.new(1, 1, 1)
+    TextBox.TextSize = 14
+    TextBox.Font = Enum.Font.Gotham
+    TextBox.Text = ""
+    Instance.new("UICorner", TextBox).CornerRadius = UDim.new(0, 6)
+
+    local BtnFrame = Instance.new("Frame", Content)
+    BtnFrame.Size = UDim2.new(1, 0, 0, 35)
+    BtnFrame.Position = UDim2.new(0, 0, 0, 110)
+    BtnFrame.BackgroundTransparency = 1
+
+    local function StyleBtn(b, c)
+        b.Size = UDim2.new(0, 125, 1, 0)
+        b.BackgroundColor3 = c
+        b.TextColor3 = Color3.new(1, 1, 1)
+        b.Font = Enum.Font.GothamBold
+        b.TextSize = 14
+        b.BorderSizePixel = 0
+        b.TextStrokeTransparency = 0.8
+        Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
+    end
+
+    local Check = Instance.new("TextButton", BtnFrame)
+    Check.Text = "CHECK KEY"
+    Check.Position = UDim2.new(0, 0, 0, 0)
+    StyleBtn(Check, Color3.fromRGB(46, 204, 113))
+
+    local Get = Instance.new("TextButton", BtnFrame)
+    Get.Text = "GET KEY"
+    Get.Position = UDim2.new(0, 135, 0, 0)
+    StyleBtn(Get, Color3.fromRGB(231, 76, 60))
+
+    Get.MouseButton1Click:Connect(function()
+        setclipboard("https://champgod011-dot.github.io/nevermanxdev/")
+        game.StarterGui:SetCore("SendNotification", {
+            Title = "System",
+            Text = "Link copied!",
+            Duration = 3
+        })
+    end)
+
+    Check.MouseButton1Click:Connect(function()
+        if TextBox.Text == CorrectKey then
+            ScreenGui:Destroy()
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "System",
+                Text = "Correct Key!",
+                Duration = 3
+            })
+            _G.KeyPassed = true
+        else
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "System",
+                Text = "Wrong Key!",
+                Duration = 3
+            })
+        end
+    end)
+
+    repeat task.wait() until _G.KeyPassed
+end
+
+KeySystem()
+
 -- ── Services ─────────────────────────────────────────────────
 local Players             = game:GetService("Players")
 local RunService          = game:GetService("RunService")
